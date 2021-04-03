@@ -11,7 +11,7 @@ void setup()
     pinMode(g_pin, OUTPUT);
 }
 
-void clearSegment() 
+void clearSegment()
 {
     digitalWrite(a_pin, LOW);
     digitalWrite(b_pin, LOW);
@@ -153,7 +153,7 @@ void numberToSegment(int number)
 
 void loop()
 {
-    for (int i = 0; i < 10; i++)
+    for (int i = 9; i >= 0; i--)
     {
         numberToSegment(i);
         delay(800);
