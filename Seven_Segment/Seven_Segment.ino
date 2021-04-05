@@ -1,4 +1,8 @@
 const int a_pin = 6, b_pin = 5, c_pin = 4, d_pin = 3, e_pin = 2, f_pin = 7, g_pin = 8;
+const int start_pin = 10, stop_pin = 11;
+
+int counter = 9;
+int timer_status = 0, stop_click = 0; //0: stop, 1: start
 
 void setup()
 {
@@ -9,6 +13,8 @@ void setup()
     pinMode(e_pin, OUTPUT);
     pinMode(f_pin, OUTPUT);
     pinMode(g_pin, OUTPUT);
+    pinMode(start_pin, INPUT_PULLUP);
+    pinMode(stop_pin, INPUT_PULLUP);
 }
 
 void clearSegment()
@@ -151,12 +157,31 @@ void numberToSegment(int number)
     }
 }
 
+void decrementCounter()
+{
+}
+
 void loop()
 {
-    for (int i = 9; i >= 0; i--)
+    if (!digitalRead(start_pin) == HIGH)
+        timer_status = 1;
+    if (!digitalRead(stop_pin) == HIGH)
     {
-        numberToSegment(i);
-        delay(800);
-        clearSegment();
+        timer_status = 0;
+        numberToSegment(counter);
     }
+    if (timer_status == 1)
+    {
+        numberToSegment(counter);
+        delay(1000);
+        clearSegment();
+        counter--;
+        if (counter == -1)
+        {
+            counter = 9;
+            timer_status = 0;
+        }
+    }
+    else
+        delay(10); //to stablize read
 }
